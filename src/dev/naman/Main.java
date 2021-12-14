@@ -4,87 +4,45 @@ import dev.naman.controllers.GameController;
 import dev.naman.factories.PlayerFactory;
 import dev.naman.models.*;
 import dev.naman.strategies.automove.RandomMoveStrategy;
+import dev.naman.strategies.movevalidation.DefaultValidationStrategy;
 import dev.naman.strategies.winning.DefaultWinningStrategy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
+        SymbolRegistry symbolRegistry = new SymbolRegistry();
+        symbolRegistry.addSymbol('X');
+        symbolRegistry.addSymbol('O');
+
+        HashMap<String, User> users = new HashMap<>();
+        User user = User.getBuilder()
+                .seUserName("avinash")
+                .setEmail("avinash@gmail.com")
+                .build();
+        users.put("avinash", user);
+
         Game game = Game.getBuilder()
                 .addPlayer(
                         PlayerFactory.createHumanPlayer()
-                        .setUser(new User())
-                        .setSymbol('O')
-                        .build()
+                            .setUser(users.get("avinash"))
+                            .setSymbol('O')
+                            .build()
                 )
                 .addPlayer(
                         PlayerFactory.createBot()
-                                .setMoveStrategy(new RandomMoveStrategy())
-                                .setSymbol('X')
-                                .build()
+                            .setMoveStrategy(new RandomMoveStrategy())
+                            .setSymbol('X')
+                            .build()
                 )
                 .addWinningStrategy(new DefaultWinningStrategy())
+                .addValidationStrategy(new DefaultValidationStrategy())
                 .setRows(3)
                 .setColumns(3)
                 .build();
         GameController.run(game);
     }
 }
-
-// It returns an object of the subtype of a supercass
-
-// Test Driven Development
-// Write test cases first and after that write the code
-// Test case ~~ client code
-// Gojek
-// Client willinteract with an api (methods)
-// behind the scenes interact with the different entities/ services I have
-// Board, Game, Player
-// Where is this application going to be used
-// - Web based applications: Some APIs
-// Eg /game/create /game/move /game/quit => send request via postman
-// race conditions: how will you handle race conditions
-
-// - Command line applications
-// - read inputs from the terminal and do similar actions
-// - CreateGame pi p2
-// - MakeMove 1,3 2,4
-// Implement a [program that works in a good way -> test if you know how to
-// distribute code in apckages
-// bms, splitwise etc -> web based applications
-
-// Restaurant
-// Waiter -> Chef -> inmgredients from fridge -> AC / Normal
-// Controller (Door to a massive system)
-// Service (Chef)
-// Model (Ingredients)
-// Repositories (Fridge)
-
-// before project building
-
-// Splitwise etc
-
-// client side app -> we don't want any persistent
-// web based applications
-// command line application: keep taking inputs and performa actions
-// CreateGame p1 p2
-// MakeMove 1,3 4,5
-// Exit
-
-// Client {
-//   createGame();
-//   makeMove(game, (1, 2), (4, 5))
-// }
-
-// where you have a separate servier (serving via REST apis)
-
-// no straight path to implementation
-// haphazard
-
-
-// a builder for a player -> symbol
-// a builder for a bot -> difficult strategy
-// a builder for a human player -> user detal=ils

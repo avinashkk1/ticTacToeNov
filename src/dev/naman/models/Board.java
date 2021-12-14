@@ -5,24 +5,49 @@ import java.util.List;
 
 public class Board {
     private List<List<Cell>> board;
+    private int numberOfRows;
+    private int numberOfColumns;
 
     Board(int rows, int columns) {
+        this.numberOfRows = rows;
+        this.numberOfColumns = columns;
+
         board = new ArrayList<>();
         for (int i = 0; i < rows; ++i) {
             board.add(new ArrayList<>());
             for (int j = 0; j < columns; ++j) {
-                board.get(i).add(new Cell());
+                board.get(i).add(new Cell(i, j));
             }
         }
     }
 
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public int getNumberOfColumns() {
+        return numberOfColumns;
+    }
+
+    public List<List<Cell>> getBoard() {
+        return board;
+    }
+
     public void printBoard() {
+        System.out.printf("**********************************************\n");
         for (int i = 0; i < board.size(); ++i) {
-            for (int j = 0; j < board.get(i). size(); ++j) {
-                System.out.printf("%c ", board.get(i).get(j).symbol.getSymbol());
+            for (int j = 0; j < board.get(i).size(); ++j) {
+                Symbol symbol = board.get(i).get(j).getSymbol();
+                if (symbol == null) {
+                    System.out.printf("- ");
+                } else {
+                    System.out.printf("%c ", symbol.getSymbol());
+                }
+
             }
+            System.out.printf("\n");
         }
-        System.out.printf("\n");
+        System.out.printf("**********************************************\n");
     }
 }
 

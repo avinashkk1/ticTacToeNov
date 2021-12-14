@@ -9,6 +9,11 @@ public class Bot extends Player {
         return new Builder();
     }
 
+    @Override
+    public Move makeMove(Board board) {
+        return automaticMoveStrategy.makeMove(board);
+    }
+
     public static class Builder {
         private Bot bot;
 
@@ -22,7 +27,7 @@ public class Bot extends Player {
         }
 
         public Builder setSymbol(char symbol) {
-            this.bot.symbol = new Symbol(symbol);
+            this.bot.setSymbol(new Symbol(symbol));
             return this;
         }
 
